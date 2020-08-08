@@ -24,7 +24,7 @@ tracks/0/keys = {
 "values": [ 36, 37, 38, 39 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SowrdPivot:rotation_degrees")
+tracks/1/path = NodePath("SwordPivot:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -36,7 +36,7 @@ tracks/1/keys = {
 "values": [ 90.0 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("SowrdPivot/DamageDealer/CollisionShape2D:disabled")
+tracks/2/path = NodePath("SwordPivot/DamageDealer/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -64,7 +64,7 @@ tracks/0/keys = {
 "values": [ 32, 33, 34, 35 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SowrdPivot:rotation_degrees")
+tracks/1/path = NodePath("SwordPivot:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -76,7 +76,7 @@ tracks/1/keys = {
 "values": [ 180.0 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("SowrdPivot/DamageDealer/CollisionShape2D:disabled")
+tracks/2/path = NodePath("SwordPivot/DamageDealer/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -104,7 +104,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SowrdPivot:rotation_degrees")
+tracks/1/path = NodePath("SwordPivot:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -116,7 +116,7 @@ tracks/1/keys = {
 "values": [ 0.0 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("SowrdPivot/DamageDealer/CollisionShape2D:disabled")
+tracks/2/path = NodePath("SwordPivot/DamageDealer/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -144,7 +144,7 @@ tracks/0/keys = {
 "values": [ 28, 29, 30, 31 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("SowrdPivot:rotation_degrees")
+tracks/1/path = NodePath("SwordPivot:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -156,7 +156,7 @@ tracks/1/keys = {
 "values": [ 270.0 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("SowrdPivot/DamageDealer/CollisionShape2D:disabled")
+tracks/2/path = NodePath("SwordPivot/DamageDealer/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -493,11 +493,10 @@ graph_offset = Vector2( -490.027, 0 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=34]
 
-[sub_resource type="CapsuleShape2D" id=35]
-height = 15.0
+[sub_resource type="CapsuleShape2D" id=47]
 
 [node name="Player" type="KinematicBody2D"]
-collision_layer = 10
+collision_layer = 2
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -537,17 +536,19 @@ parameters/IDLE/blend_position = Vector2( 0, 1 )
 parameters/MOVE/blend_position = Vector2( 0, 1 )
 parameters/ROLL/blend_position = Vector2( 0, 1 )
 
-[node name="SowrdPivot" type="Position2D" parent="."]
+[node name="SwordPivot" type="Position2D" parent="."]
 position = Vector2( 0, -4 )
 rotation = 3.14159
 
-[node name="DamageDealer" parent="SowrdPivot" instance=ExtResource( 3 )]
+[node name="DamageDealer" parent="SwordPivot" instance=ExtResource( 3 )]
 position = Vector2( 15, 0 )
 collision_layer = 4
 collision_mask = 32
+damage = 100
+pushBack = 100
 
-[node name="CollisionShape2D" parent="SowrdPivot/DamageDealer" index="0"]
-shape = SubResource( 35 )
+[node name="CollisionShape2D" parent="SwordPivot/DamageDealer" index="0"]
+shape = SubResource( 47 )
 disabled = true
 
-[editable path="SowrdPivot/DamageDealer"]
+[editable path="SwordPivot/DamageDealer"]

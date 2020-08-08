@@ -1,21 +1,25 @@
-extends "res://Scripts/Character.gd"
+extends KinematicBody2D
 
 var knockBack = Vector2.ZERO
-
-func _ready():
-	MAX_HEALTH = 100
-	currentHealth = 100
-	defense = 20
-	pushBackResistance = 200
+var isDead = false
+onready var body = $DamageReceiver
 
 func _physics_process(delta):
-	knockBack = knockBack.move_toward(Vector2.ZERO, pushBackResistance * delta)
-	move_and_slide(knockBack)
+	if !isDead:
+		knockBack = knockBack.move_toward(Vector2.ZERO, body.pushBackResistance * delta)
+		move_and_slide(knockBack)
 
 func _on_DamageReceiver_area_entered(area):
 	knockBack = area.pushBack * area.attackDirection
-	currentHealth -= area.damage - defense
-	
-	print(currentHealth)
-	if currentHealth < 0:
+	body.currentHealth -= area.damage - body.defense
+
+
+func _on_DamageReceiver_noHealth():
+	$DamageReceiver.queue_free()
+	isDead = true
+	$BatSprite.play("death")
+
+
+func _on_BatSprite_animation_finished():
+	if isDead:
 		queue_free()

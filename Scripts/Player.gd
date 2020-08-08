@@ -1,25 +1,18 @@
-extends "res://Scripts/Character.gd"
+extends KinematicBody2D
 
-const ACCELERATION = 300
-const MAX_SPEED = 100
-const ROLL_DISTANCE = 300
+export var ACCELERATION = 300
+export var MAX_SPEED = 100
+export var ROLL_DISTANCE = 300
 
 var velocity = Vector2.ZERO
 var rollSide = Vector2.DOWN
 
 onready var animationManager = $AnimationTree
 onready var animationState = animationManager.get("parameters/playback")
+#onready var body
 
 func _ready():
 	animationManager.active = true
-	
-	MAX_HEALTH = 100
-	currentHealth = 100
-	defense = 80
-	pushBackResistance = 300
-	
-	$SowrdPivot/DamageDealer.damage = 100
-	$SowrdPivot/DamageDealer.pushBack = 100
 
 func _physics_process(delta):
 	var normInputVector = Vector2.ZERO
@@ -29,7 +22,7 @@ func _physics_process(delta):
 	
 	if normInputVector != Vector2.ZERO:
 		rollSide = normInputVector
-		$SowrdPivot/DamageDealer.attackDirection = normInputVector
+		$SwordPivot/DamageDealer.attackDirection = normInputVector
 		animationManager.set("parameters/IDLE/blend_position", normInputVector)
 		animationManager.set("parameters/MOVE/blend_position", normInputVector)
 		animationManager.set("parameters/ATTACK/blend_position", normInputVector)

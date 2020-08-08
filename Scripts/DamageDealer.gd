@@ -1,5 +1,5 @@
 extends Area2D
 
-var damage = null
-var pushBack = null
+export var damage = 0
+export var pushBack = 0
 var attackDirection = Vector2.ZERO
