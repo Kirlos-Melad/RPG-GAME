@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/World/GrassBackground.png" type="Texture" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://Scenes/Grass.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/bush.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Bat.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scripts/World.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/FollowerCamera.tscn" type="PackedScene" id=9]
 
 [sub_resource type="TileSet" id=1]
 0/name = "DirtTileset.png 0"
@@ -482,13 +484,16 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 } ]
 0/z_index = 0
 
+[sub_resource type="AnimationNodeStateMachinePlayback" id=50]
+
 [node name="World" type="Node2D"]
+script = ExtResource( 8 )
 
 [node name="background" type="Sprite" parent="."]
-position = Vector2( 160, 90 )
+position = Vector2( 250, 250 )
 texture = ExtResource( 2 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 320, 180 )
+region_rect = Rect2( 0, 0, 500, 500 )
 
 [node name="DirtTileMap" type="TileMap" parent="."]
 tile_set = SubResource( 1 )
@@ -501,53 +506,118 @@ tile_set = SubResource( 49 )
 cell_size = Vector2( 32, 32 )
 collision_mask = 0
 format = 1
-tile_data = PoolIntArray( 4, 0, 3, 65536, 0, 196608, 65537, 0, 196609, 65538, 0, 196609, 65539, 0, 196609, 65540, 0, 196615, 262144, 0, 196608, 262145, 0, 196609, 262146, 0, 196609, 262147, 0, 196609, 262148, 0, 7, 327684, 0, 131075 )
+tile_data = PoolIntArray( 0, 0, 4, 1, 0, 196609, 2, 0, 196609, 3, 0, 196609, 4, 0, 196609, 5, 0, 196609, 6, 0, 196609, 7, 0, 196609, 8, 0, 196609, 9, 0, 196609, 10, 0, 196609, 11, 0, 8, 12, 0, 196609, 13, 0, 196609, 14, 0, 196609, 15, 0, 7, 65536, 0, 65539, 65547, 0, 65539, 65551, 0, 65539, 131072, 0, 65539, 131083, 0, 65539, 131087, 0, 65539, 196608, 0, 65539, 196619, 0, 65539, 196623, 0, 65539, 262144, 0, 65539, 262155, 0, 65539, 262159, 0, 65539, 327680, 0, 65539, 327691, 0, 65539, 327695, 0, 65539, 393216, 0, 65539, 393224, 0, 4, 393225, 0, 196609, 393226, 0, 196609, 393227, 0, 196615, 393231, 0, 65539, 458752, 0, 65539, 458760, 0, 65539, 458767, 0, 65539, 524288, 0, 262148, 524289, 0, 196609, 524290, 0, 196609, 524291, 0, 196609, 524292, 0, 196609, 524293, 0, 196610, 524296, 0, 131075, 524303, 0, 65539, 589824, 0, 65539, 589839, 0, 65539, 655360, 0, 65539, 655375, 0, 65539, 720896, 0, 65539, 720901, 0, 3, 720907, 0, 3, 720911, 0, 65539, 786432, 0, 65539, 786437, 0, 65539, 786443, 0, 65539, 786447, 0, 65539, 851968, 0, 65539, 851973, 0, 65539, 851979, 0, 65539, 851983, 0, 65539, 917504, 0, 65539, 917509, 0, 65539, 917515, 0, 65539, 917519, 0, 65539, 983040, 0, 196612, 983041, 0, 196609, 983042, 0, 196609, 983043, 0, 196609, 983044, 0, 196609, 983045, 0, 196616, 983046, 0, 196609, 983047, 0, 196609, 983048, 0, 196609, 983049, 0, 196609, 983050, 0, 196609, 983051, 0, 196616, 983052, 0, 196609, 983053, 0, 196609, 983054, 0, 196609, 983055, 0, 196615 )
+
+[node name="FollowerCamera" parent="." instance=ExtResource( 9 )]
+position = Vector2( 88, 88 )
+smoothing_enabled = true
+
+[node name="TopLeft" parent="FollowerCamera/Limits" index="0"]
+position = Vector2( 0, 0 )
+
+[node name="BottomRight" parent="FollowerCamera/Limits" index="1"]
+position = Vector2( 500, 500 )
 
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Player" parent="YSort" instance=ExtResource( 1 )]
-position = Vector2( 22.8829, 83.3313 )
+position = Vector2( 88, 88 )
+
+[node name="AnimationTree" parent="YSort/Player" index="3"]
+parameters/playback = SubResource( 50 )
+
+[node name="CameraController" type="RemoteTransform2D" parent="YSort/Player"]
+remote_path = NodePath("../../../FollowerCamera")
 
 [node name="Bushes" type="YSort" parent="YSort"]
 
 [node name="bush" parent="YSort/Bushes" instance=ExtResource( 6 )]
-position = Vector2( 168.576, 55.2723 )
+position = Vector2( 48, 40 )
 
 [node name="bush2" parent="YSort/Bushes" instance=ExtResource( 6 )]
-position = Vector2( 169.137, 33.9455 )
+position = Vector2( 80, 40 )
 
 [node name="bush3" parent="YSort/Bushes" instance=ExtResource( 6 )]
-position = Vector2( 169.699, 14.8637 )
+position = Vector2( 112, 40 )
 
 [node name="bush4" parent="YSort/Bushes" instance=ExtResource( 6 )]
-position = Vector2( 168.015, 145.63 )
+position = Vector2( 144, 40 )
 
 [node name="bush5" parent="YSort/Bushes" instance=ExtResource( 6 )]
-position = Vector2( 167.454, 160.223 )
+position = Vector2( 176, 40 )
 
 [node name="bush6" parent="YSort/Bushes" instance=ExtResource( 6 )]
-position = Vector2( 167.454, 177.059 )
+position = Vector2( 48, 144 )
+
+[node name="bush7" parent="YSort/Bushes" instance=ExtResource( 6 )]
+position = Vector2( 80, 144 )
+
+[node name="bush8" parent="YSort/Bushes" instance=ExtResource( 6 )]
+position = Vector2( 112, 144 )
+
+[node name="bush9" parent="YSort/Bushes" instance=ExtResource( 6 )]
+position = Vector2( 144, 144 )
+
+[node name="bush10" parent="YSort/Bushes" instance=ExtResource( 6 )]
+position = Vector2( 176, 144 )
 
 [node name="Grasses" type="YSort" parent="YSort"]
 
 [node name="Grass" parent="YSort/Grasses" instance=ExtResource( 5 )]
-position = Vector2( 197.746, 93.0817 )
+position = Vector2( 192, 256 )
 
 [node name="Grass2" parent="YSort/Grasses" instance=ExtResource( 5 )]
-position = Vector2( 263.41, 85.7857 )
+position = Vector2( 208, 256 )
 
 [node name="Grass4" parent="YSort/Grasses" instance=ExtResource( 5 )]
-position = Vector2( 295.962, 84.6632 )
+position = Vector2( 240, 256 )
 
 [node name="Grass3" parent="YSort/Grasses" instance=ExtResource( 5 )]
-position = Vector2( 226.93, 89.153 )
+position = Vector2( 224, 256 )
 
-[node name="YSort" type="YSort" parent="YSort"]
+[node name="Grass5" parent="YSort/Grasses" instance=ExtResource( 5 )]
+position = Vector2( 192, 272 )
 
-[node name="Bat" parent="YSort/YSort" instance=ExtResource( 7 )]
-position = Vector2( 135.45, 120.021 )
+[node name="Grass6" parent="YSort/Grasses" instance=ExtResource( 5 )]
+position = Vector2( 208, 272 )
 
-[node name="YSort2" type="YSort" parent="YSort"]
+[node name="Grass7" parent="YSort/Grasses" instance=ExtResource( 5 )]
+position = Vector2( 240, 272 )
 
-[node name="Bat" parent="YSort/YSort2" instance=ExtResource( 7 )]
-position = Vector2( 133.205, 94.2041 )
+[node name="Grass8" parent="YSort/Grasses" instance=ExtResource( 5 )]
+position = Vector2( 224, 272 )
+
+[node name="Bats" type="YSort" parent="YSort"]
+
+[node name="Bat" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 288, 144 )
+Wander_ABS_Error = 1
+
+[node name="Bat2" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 256, 48 )
+
+[node name="Bat3" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 80, 328 )
+
+[node name="Bat4" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 440, 400 )
+Wander_ABS_Error = 1
+
+[node name="Bat5" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 432, 128 )
+
+[node name="Bat6" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 272, 424 )
+
+[node name="Bat7" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 120, 456 )
+Wander_ABS_Error = 1
+
+[node name="Bat8" parent="YSort/Bats" instance=ExtResource( 7 )]
+position = Vector2( 432, 264 )
+
+[node name="Trees" type="YSort" parent="YSort"]
+
+[editable path="FollowerCamera"]
+
+[editable path="YSort/Player"]

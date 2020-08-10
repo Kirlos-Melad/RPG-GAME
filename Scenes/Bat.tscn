@@ -1,10 +1,13 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Assets/Enemies/Bat.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Shadows/SmallShadow.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/DamageReceiver.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/Bat.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Effects/EnemyDeathEffect.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/DetectionZone.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/DamageDealer.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/WanderController.tscn" type="PackedScene" id=8]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -26,73 +29,82 @@ region = Rect2( 48, 0, 16, 24 )
 atlas = ExtResource( 1 )
 region = Rect2( 64, 0, 16, 24 )
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 5 )
 region = Rect2( 32, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 5 )
 region = Rect2( 64, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 5 )
 region = Rect2( 96, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=13]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 5 )
 region = Rect2( 128, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 5 )
 region = Rect2( 160, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=15]
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 5 )
 region = Rect2( 192, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=16]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 5 )
 region = Rect2( 224, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=17]
+[sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 5 )
 region = Rect2( 256, 0, 32, 32 )
 
-[sub_resource type="AtlasTexture" id=18]
+[sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 5 )
 region = Rect2( 288, 0, 32, 32 )
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=16]
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
 "loop": true,
 "name": "default",
 "speed": 12.0
 }, {
-"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ) ],
+"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ],
 "loop": true,
 "name": "death",
 "speed": 12.0
 } ]
 
-[sub_resource type="CircleShape2D" id=7]
+[sub_resource type="CircleShape2D" id=17]
 radius = 5.15428
 
-[sub_resource type="CapsuleShape2D" id=8]
+[sub_resource type="CapsuleShape2D" id=18]
 radius = 8.0
 height = 2.7399
 
+[sub_resource type="CapsuleShape2D" id=19]
+radius = 8.0
+height = 2.74
+
+[sub_resource type="CircleShape2D" id=20]
+radius = 48.6621
+
 [node name="Bat" type="KinematicBody2D"]
-collision_layer = 2147483648
+collision_layer = 2147483664
+collision_mask = 17
 script = ExtResource( 4 )
+Wander_ABS_Error = 2
 
 [node name="BatSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 6 )
-frame = 1
+frames = SubResource( 16 )
+frame = 4
 playing = true
 offset = Vector2( 0, -12 )
 
@@ -100,20 +112,47 @@ offset = Vector2( 0, -12 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 7 )
+shape = SubResource( 17 )
 
 [node name="DamageReceiver" parent="." instance=ExtResource( 3 )]
-collision_layer = 32
-collision_mask = 2147483652
+collision_layer = 64
 MAX_HEALTH = 100
 defense = 20
-pushBackResistance = 200
+motionResistance = 200
+MAX_SPEED = 50
+ACCELERATION = 300
 
 [node name="CollisionShape2D" parent="DamageReceiver" index="0"]
 position = Vector2( 0, -14.6301 )
-shape = SubResource( 8 )
+shape = SubResource( 18 )
+
+[node name="DamageDealer" parent="." instance=ExtResource( 7 )]
+collision_layer = 32
+collision_mask = 8
+damage = 100
+
+[node name="CollisionShape2D" parent="DamageDealer" index="0"]
+position = Vector2( 0, -14.63 )
+shape = SubResource( 19 )
+
+[node name="DetectionZone" parent="." instance=ExtResource( 6 )]
+position = Vector2( 0, -8 )
+collision_mask = 2
+
+[node name="CollisionShape2D" parent="DetectionZone" index="0"]
+shape = SubResource( 20 )
+
+[node name="WanderController" parent="." instance=ExtResource( 8 )]
+Wander_Range = Vector2( 25, 25 )
 [connection signal="animation_finished" from="BatSprite" to="." method="_on_BatSprite_animation_finished"]
 [connection signal="area_entered" from="DamageReceiver" to="." method="_on_DamageReceiver_area_entered"]
 [connection signal="noHealth" from="DamageReceiver" to="." method="_on_DamageReceiver_noHealth"]
+[connection signal="timeout" from="WanderController/Timer" to="." method="_on_Timer_timeout"]
 
 [editable path="DamageReceiver"]
+
+[editable path="DamageDealer"]
+
+[editable path="DetectionZone"]
+
+[editable path="WanderController"]

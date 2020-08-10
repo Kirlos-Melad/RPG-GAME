@@ -106,8 +106,9 @@ roll={
 2d_physics/layer_2="Player"
 2d_physics/layer_3="PlayerDamageDealer"
 2d_physics/layer_4="PlayerDamageReceiver"
-2d_physics/layer_5="EnemyDamageDealer"
-2d_physics/layer_6="EnemyDamageReceiver"
+2d_physics/layer_5="Enemy"
+2d_physics/layer_6="EnemyDamageDealer"
+2d_physics/layer_7="EnemyDamageReceiver"
 
 [rendering]
 
