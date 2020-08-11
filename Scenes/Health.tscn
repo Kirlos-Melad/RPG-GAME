@@ -4,24 +4,27 @@
 [ext_resource path="res://Assets/UI/HeartUIEmpty.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Health.gd" type="Script" id=3]
 
-[node name="CanvasLayer" type="CanvasLayer"]
-
-[node name="Health" type="Control" parent="."]
+[node name="Health" type="Control"]
 margin_right = 15.0
 margin_bottom = 11.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+MAX_HEARTS = 3
 
-[node name="EmptyHeart" type="TextureRect" parent="Health"]
+[node name="EmptyHeart" type="TextureRect" parent="."]
 margin_right = 45.0
 margin_bottom = 11.0
 texture = ExtResource( 2 )
 stretch_mode = 2
 
-[node name="FullHeart" type="TextureRect" parent="Health"]
+[node name="FullHeart" type="TextureRect" parent="."]
 margin_right = 15.0
 margin_bottom = 11.0
 texture = ExtResource( 1 )
+expand = true
 stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}

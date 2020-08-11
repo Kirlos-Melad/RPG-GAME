@@ -66,8 +66,12 @@ func onRollFinished():
 
 func _on_DamageReceiver_area_entered(area):
 	body.currentHealth -= (area.damage - body.defense)
-	body.activateInvincibility(1)
+	body.activateInvincibility(0.5)
+
+#Associated with noHeart func in Health canavas
+func on_noHearts():
+	queue_free()
 
 
 func _on_DamageReceiver_noHealth():
-	queue_free()
+	body.set_deferred("currentHealth", body.MAX_HEALTH)

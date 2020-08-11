@@ -104,7 +104,6 @@ Wander_ABS_Error = 2
 
 [node name="BatSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 16 )
-frame = 4
 playing = true
 offset = Vector2( 0, -12 )
 

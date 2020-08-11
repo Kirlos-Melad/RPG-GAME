@@ -37,7 +37,6 @@ func moveTo(delta, position):
 
 func changeState():
 	self.isWandering = bool(randi() % 2)
-	print(self.isWandering, " ", bool(randi() % 2))
 	wanderController.startWandering(rand_range(1, 3))
 
 func _on_DamageReceiver_area_entered(area):

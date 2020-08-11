@@ -1,16 +1,26 @@
 extends Control
 
+export var MAX_HEARTS = 1
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var currentHearts = MAX_HEARTS
+onready var fullHeart = $FullHeart
+onready var emptyHeart = $EmptyHeart
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	MAX_HEARTS = max(MAX_HEARTS, 1)
+	setFullHeartPercentile(100)
 
+signal noHearts
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func connectPlayer(body):
+	body.connect("noHealth", self, "decrementCurrentHearts")
+	body.connect("healthChanged", self, "setFullHeartPercentile")
+
+func decrementCurrentHearts():
+	currentHearts -= 1
+	if currentHearts == 0:
+		emit_signal("noHearts")
+
+func setFullHeartPercentile(value):
+	#fullHeart.set_deferred("rect_size.x", ((currentHearts - 1) * 15) + ((value / 100) * 15))
+	fullHeart.rect_size.x = ((currentHearts) * 15)

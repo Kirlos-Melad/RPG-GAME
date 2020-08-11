@@ -11,11 +11,13 @@ var velocity = Vector2.ZERO
 onready var currentHealth = MAX_HEALTH setget setCurrentHealth
 
 signal noHealth
+signal healthChanged(value)
 signal invincibleActive
 signal invincibleInactive
 
 func setCurrentHealth(value):
-	currentHealth = value
+	currentHealth = max(value, 0)
+	emit_signal("healthChanged", currentHealth)
 	if currentHealth <= 0:
 		emit_signal("noHealth")
 
